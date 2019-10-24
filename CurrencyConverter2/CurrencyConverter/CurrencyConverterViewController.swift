@@ -12,6 +12,19 @@ import Foundation
 
 class CurrencyConverterViewController: UIViewController {
     
+    let viewModel: CurrencyConverterViewable
+    
+    init(viewModel: CurrencyConverterViewable) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    
     let myPickerData: [String] = ["AED",     "AFN",     "ALL",     "AMD",     "ANG",     "AOA",     "ARS",     "AUD",     "AWG",     "AZN",     "BAM",     "BBD",     "BDT",     "BGN",     "BHD",     "BIF",     "BMD",     "BND",     "BOB",     "BRL",     "BSD",     "BTC",     "BTN",     "BWP",     "BYN",     "BYR",     "BZD",     "CAD",     "CDF",     "CHF",     "CLF",     "CLP",     "CNY",     "COP",     "CRC",     "CUC",     "CUP",     "CVE",     "CZK",     "DJF",     "DKK",     "DOP",     "DZD",     "EGP",     "ERN",     "ETB",     "EUR",     "FJD",     "FKP",     "GBP",     "GEL",     "GGP",     "GHS",     "GIP",     "GMD",     "GNF",     "GTQ",     "GYD",     "HKD",     "HNL",     "HRK",     "HTG",     "HUF",     "IDR",     "ILS",     "IMP",     "INR",     "IQD",     "IRR",     "ISK",     "JEP",     "JMD",     "JOD",     "JPY",     "KES",     "KGS",     "KHR",     "KMF",     "KPW",     "KRW",     "KWD",     "KYD",     "KZT",     "LAK",     "LBP",     "LKR",     "LRD",     "LSL",     "LTL",     "LVL",     "LYD",     "MAD",     "MDL",     "MGA",     "MKD",     "MMK",     "MNT",     "MOP",     "MRO",     "MUR",     "MVR",     "MWK",     "MXN",     "MYR",     "MZN",     "NAD",     "NGN",     "NIO",     "NOK",     "NPR",     "NZD",     "OMR",     "PAB",     "PEN",     "PGK",     "PHP",     "PKR",     "PLN",     "PYG",     "QAR",     "RON",     "RSD",     "RUB",     "RWF",     "SAR",     "SBD",     "SCR",     "SDG",     "SEK",     "SGD",     "SHP",     "SLL",     "SOS",     "SRD",     "STD",     "SVC",     "SYP",     "SZL",     "THB",     "TJS",     "TMT",     "TND",     "TOP",     "TRY",     "TTD",     "TWD",     "TZS",     "UAH",     "UGX",     "USD",     "UYU",     "UZS",     "VEF",     "VND",     "VUV",     "WST",     "XAF",     "XAG",     "XAU",     "XCD",     "XDR",     "XOF",     "XPF",     "YER",     "ZAR",     "ZMK",     "ZMW",     "ZWL"]
     // var picker = UIPickerView()
     
@@ -183,20 +196,21 @@ class CurrencyConverterViewController: UIViewController {
     
     
     @objc func convertButton(sender: UIButton) {
-        let makeApiCall = CurrencyConversionModel()
+    
         let computeFrom = selectFromCountry.text!
         let computeTo   = selectToCountry.text!
         let amount      = valueToBeConverted.text!
         
-        makeApiCall.currencyCon(fromCurrency: computeFrom, toCurrency: computeTo, amount: amount ) { (CurrencyConverterModel) in
-            showResult(amount: "\(CurrencyConverterModel.result)")
-            
+        viewModel.currencyCon(fromCurrency: computeFrom,
+                              toCurrency: computeTo,
+                              amount: amount) { [weak self](model, error) in
+                              self?.showResult(amount: "\(model?.result ?? 0)")
         }
-        
-        func showResult(amount: String) {
-            DispatchQueue.main.async {
-                self.convertedCurrency.text = amount
-            }
+    }
+    
+    func showResult(amount: String) {
+        DispatchQueue.main.async {
+            self.convertedCurrency.text = amount
         }
     }
 }

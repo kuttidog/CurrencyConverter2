@@ -73,13 +73,15 @@ class ViewController: UIViewController {
     
     
     @objc func convertCurrency(sender: UIButton) {
-        let vc = CurrencyConverterViewController()
+        let vm = CurrencyConverterViewModel()
+        let vc = CurrencyConverterViewController(viewModel: vm)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func exchangeCurrencies(sender: UIButton) {
         
-        let vc = exchangeCurrenciesViewController()
+        let vm = ExchangeCurrenciesViewModel()
+        let vc = ExchangeCurrenciesViewController(viewModel: vm)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

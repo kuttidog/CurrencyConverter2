@@ -10,13 +10,9 @@ import UIKit
 
 class ExchangeResultTableViewController: UITableViewController {
 
-    
-
     var currencies = [String]()
-    
     override func viewDidLoad() {
-        super.viewDidLoad()
-
+    super.viewDidLoad()
        
         tableView.register(PopulateTableViewCell.self, forCellReuseIdentifier: "cell")
         self.navigationController?.isNavigationBarHidden = false
@@ -25,12 +21,10 @@ class ExchangeResultTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         let countOfResult = currencies.count
         return countOfResult
     }
